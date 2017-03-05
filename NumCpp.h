@@ -10,13 +10,10 @@
 #include "utilMat.h"
 #define _UTIL_
 #endif
-#ifndef _LINALG_
-#include "matLinalg.h"
-#define _LINALG_
+#ifndef _NUMCPP_
+#define _NUMCPP_
 #endif
 Vector GaussEq(Matrix &augmentedMat,int copy=1){
-
-	
 	Matrix mat(augmentedMat);
 	if (copy){
 		mat=augmentedMat.copy();
@@ -33,7 +30,6 @@ Vector GaussEq(Matrix &augmentedMat,int copy=1){
 			matImmerse(mat,i,j,i,col,1);
 			}
 		}
-	mat.disp();
 	Vector solution(row);
 	for(i=row;i>=1;--i){
 		solution(i)=mat(i,col);
@@ -42,8 +38,24 @@ Vector GaussEq(Matrix &augmentedMat,int copy=1){
 		solution(i)/=mat(i,i);
 	}
 	return solution;
+}	
+Matrix randomMat(int row,int col){
+	Matrix newMat(row,col);
+	int i,j;
+	for(i=1;i<=row;++i)
+		for(j=1;j<=col;++j)
+			newMat(i,j)=rand()/(1.0*RAND_MAX)/row/col;
+	return newMat;
+}
+Matrix Cate(Matrix tag,int n){
+	int row=tag.row(),i,j;
+	Matrix cate(row,n);
 	
-	
+	for(i=1;i<=row;++i){
+		for(j=1;j<=n;++j)
+			cate(i,j)=(fabs(j-1-tag(i,1))<0.5)?1:0;
+	}
+	return cate;
 	
 }
 

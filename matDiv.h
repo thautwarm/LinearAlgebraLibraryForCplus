@@ -1,5 +1,5 @@
 	//除法
-        Matrix operator/(float C){
+        Matrix operator/(double C){
                 Matrix mat=*this;
                 int row=mat.row(),col=mat.col();
                 Matrix newMat(row,col);
@@ -11,7 +11,7 @@
                         }
                 return newMat;
         }
-        Matrix operator/=(float C){
+        Matrix operator/=(double C){
                 Matrix mat=*this;
                 int row=mat.row(),col=mat.col();
                 int i,j;
@@ -24,11 +24,11 @@
         }
         Matrix operator/(int C){
                 Matrix mat=*this;
-                float Cf=float(C);
+                double Cf=double(C);
                 return mat/Cf;
         }
         Matrix operator/=(int C){
                 Matrix mat=*this;
-                float Cf=float(C);
+                double Cf=double(C);
                 return mat/=Cf;
         }

@@ -45,7 +45,7 @@
                 return mata;
         }
         
-        Matrix operator-(float C){
+        Matrix operator-(double C){
                 Matrix mat=*this;
                 int row=mat.row(),col=mat.col();
                 Matrix newMat(row,col);
@@ -57,7 +57,7 @@
                         }
                 return newMat;
         }
-        Matrix operator-=(float C){
+        Matrix operator-=(double C){
                 Matrix mat=*this;
                 int row=mat.row(),col=mat.col();
                 int i,j;
