@@ -94,7 +94,7 @@ double sigmoid(double x){
 }
 void doSigmoid(Matrix vector,Matrix &output){
 	int row=vector.row(),i;
-	for(i=1;i<=row;++i) output(i,1)=(vector(i,1)>-10)?sigmoid(vector(i,1)):0;
+	for(i=1;i<=row;++i) output(i,1)=(vector(i,1)>-5)?sigmoid(vector(i,1)):0;
 }
 Matrix primeSigmoid(Matrix output){
 	int row=output.row(),i;
@@ -198,7 +198,7 @@ class ReluNet{  //激活函数为relu的神经网络
 				weight.next();
 				output.next();
 				bias.next();
-				doSigmoid(input.getMat(),output.getMat());
+				doSigmoid(input.getMat(),output.getMat());                                    //do
 				input.next();
 		}
 		return output.getMat();
@@ -217,7 +217,7 @@ class ReluNet{  //激活函数为relu的神经网络
 		output.next();
 		while(Error.isNotEnd()){
 			
-			Error.getMat().Hadamard(weight.getMat().T()*(Error.getLastMat()),primeSigmoid(output.getMat()));
+			Error.getMat().Hadamard(weight.getMat().T()*(Error.getLastMat()),primeSigmoid(output.getMat())); //prime
 
 			
 			weight.next();
@@ -233,7 +233,7 @@ class ReluNet{  //激活函数为relu的神经网络
 	void WeightRenew(){
 		clear();
 		
-		double r=1.0*rand()/RAND_MAX/8;
+		double r=0.12;
 		while(weight.isNotEnd()){
 			weight.getMat().getSub(weight.getMat(),(Error.getMat()*input.getMat().T())*r);
 			bias.getMat().getSub(bias.getMat(),Error.getMat()*r);
@@ -265,7 +265,7 @@ class ReluNet{  //激活函数为relu的神经网络
 		}
 		for(i=1;i<=row;++i)
 		{	
-			int j=20;
+			int j=5;
 			while(--j){
 			single_fit(X.cut(i,i,1,col),y.cut(i,i,1,y_col));
 			}

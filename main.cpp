@@ -25,19 +25,20 @@
 int main(){
 	inData a=Get_Datas();
 	a.readyOut();
-	
 
 	Matrix mat=toMat(a,5);
-	mat.disp();
 	
 	
 	//LinearRegression
 	
+	Matrix A=mat.cut(1,150,1,4);
+	Matrix B=mat.cut(1,150,5,5);
+	LinearRegressor clf(A,B);
+	hstack(Matrix(clf.predict(A)),B).disp();
 	
-	// Matrix A=mat.cut(1,150,1,4);
-	// Matrix B=mat.cut(1,150,5,5);
-	// LinearRegressor clf(A,B);
-	// hstack(Matrix(clf.predict(A)),B).disp();
+	
+	
+	//LinearModelParam
 	// (*(clf.beta)).disp();
 	
 	
@@ -45,12 +46,13 @@ int main(){
 	
 	//NN
 	/*
-	IntVector vec(3,1,-1);
+	IntVector vec(4,1,-1);
 	Matrix A=mat.cut(1,100,1,4);
 	Matrix B=Cate(mat.cut(1,100,5,5),2);
 	vec(1)=4;
 	vec(2)=8;
-	vec(3)=2;
+	vec(3)=5;
+	vec(4)=2;
 	int i;
 	
 		int j,col=A.col(),row=A.row();
@@ -77,19 +79,72 @@ int main(){
 
 	ReluNet net(vec);
 	j=i=1;
-	while(i<=80){
-		net.fit(A.cut(i,i+20,1,4),B.cut(i,i+20,1,2));
-		i+=8;
+	
+	Matrix C=vstack(A.cut(1,25,1,4),A.cut(51,75,1,4));
+	Matrix Cy=vstack(B.cut(1,25,1,2),B.cut(51,75,1,2));
+	Matrix D=vstack(A.cut(26,50,1,4),A.cut(76,100,1,4));
+	Matrix Dy=vstack(B.cut(26,50,1,2),B.cut(76,100,1,2));
+	while(i<=50){
+		net.fit(C,Cy);
+		i+=1;
+		
 	}
 	
 	
-	sort(A.getRowIndex());
-	hstack(net.predict(A),mat.cut(51,150,5,5)).disp();
+	hstack(net.predict(D),Dy).disp();
+
 	*/
 	
+	/*
+	IntVector vec(4,1,-1);
+	Matrix A=mat.cut(1,150,1,4);
+	Matrix B=Cate(mat.cut(1,150,5,5),3);
+	vec(1)=4;
+	vec(2)=8;
+	vec(3)=5;
+	vec(4)=3;
+	int i;
+	
+		int j,col=A.col(),row=A.row();
+		double ss;
+		for(j=1;j<=col;++j)
+		{ss=0;
+			for(i=1;i<=row;i++)
+				ss+=A(i,j);
+			ss/=row;
+			for(i=1;i<=row;i++){
+				A(i,j)-=ss;
+			}
+		}
+		for(j=1;j<=col;++j)
+		{ss=0;
+			for(i=1;i<=row;i++)
+				ss+=A(i,j)*A(i,j);
+			ss/=row;
+			ss=sqrt(ss);
+			for(i=1;i<=row;i++){
+				A(i,j)/=ss;
+			}
+		}
+
+	ReluNet net(vec);
+	j=i=1;
+	Matrix C=vstack(vstack(A.cut(1,25,1,4),A.cut(51,75,1,4)),A.cut(101,125,1,4));
+	Matrix Cy=vstack(vstack(B.cut(1,25,1,3),B.cut(51,75,1,3)),B.cut(101,125,1,3));
+	
+	Matrix D=vstack(vstack(A.cut(26,50,1,4),A.cut(76,100,1,4)),A.cut(125,150,1,4));
+	Matrix Dy=vstack(vstack(B.cut(26,50,1,3),B.cut(76,100,1,3)),B.cut(125,150,1,3));
+	while(i<=100){
+		net.fit(C,Cy);
+		i+=1;
+		
+	}
+	
+	
+	hstack(net.predict(D),Dy).disp();
 
 	
-	
+	*/
 
 	// net.single_fit(C,D);
 	
