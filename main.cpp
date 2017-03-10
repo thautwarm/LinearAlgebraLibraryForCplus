@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>	
-#include <malloc.h>
 #ifndef _MATRIX_
 #include "Mat.h"
 #define _MATRIX_
@@ -21,28 +20,22 @@
 #include "datasets.h"
 #include "LinearModel.h"
 //A Lightweight Release For C++98
-
+#include "string.h"
 int main(){
 	inData a=Get_Datas();
 	a.readyOut();
-
 	Matrix mat=toMat(a,5);
-	
-	
 	//LinearRegression
 	
-	Matrix A=mat.cut(1,150,1,4);
-	Matrix B=mat.cut(1,150,5,5);
-	LinearRegressor clf(A,B);
-	hstack(Matrix(clf.predict(A)),B).disp();
+  	// Matrix A=mat.cut(1,150,1,4);
+	// Matrix B=mat.cut(1,150,5,5);
+	// LinearRegressor clf(A,B);
+	// hstack(Matrix(clf.predict(A)),B).disp();
 	
 	
 	
 	//LinearModelParam
 	// (*(clf.beta)).disp();
-	
-	
-	
 	
 	//NN
 	/*
@@ -90,18 +83,15 @@ int main(){
 		
 	}
 	
-	
 	hstack(net.predict(D),Dy).disp();
-
 	*/
 	
-	/*
 	IntVector vec(4,1,-1);
 	Matrix A=mat.cut(1,150,1,4);
 	Matrix B=Cate(mat.cut(1,150,5,5),3);
 	vec(1)=4;
-	vec(2)=8;
-	vec(3)=5;
+	vec(2)=30;
+	vec(3)=30;
 	vec(4)=3;
 	int i;
 	
@@ -127,24 +117,23 @@ int main(){
 			}
 		}
 
-	ReluNet net(vec);
+	Network net(vec);
 	j=i=1;
-	Matrix C=vstack(vstack(A.cut(1,25,1,4),A.cut(51,75,1,4)),A.cut(101,125,1,4));
-	Matrix Cy=vstack(vstack(B.cut(1,25,1,3),B.cut(51,75,1,3)),B.cut(101,125,1,3));
-	
-	Matrix D=vstack(vstack(A.cut(26,50,1,4),A.cut(76,100,1,4)),A.cut(125,150,1,4));
-	Matrix Dy=vstack(vstack(B.cut(26,50,1,3),B.cut(76,100,1,3)),B.cut(125,150,1,3));
+	// Matrix C=vstack(vstack(A.cut(1,25,1,4),A.cut(51,75,1,4)),A.cut(101,125,1,4));
+	// Matrix Cy=vstack(vstack(B.cut(1,25,1,3),B.cut(51,75,1,3)),B.cut(101,125,1,3));
+	// Matrix D=vstack(vstack(A.cut(26,50,1,4),A.cut(76,100,1,4)),A.cut(125,150,1,4));
+	// Matrix Dy=vstack(vstack(B.cut(26,50,1,3),B.cut(76,100,1,3)),B.cut(125,150,1,3));
 	while(i<=100){
-		net.fit(C,Cy);
+		net.fit(A,B);
 		i+=1;
 		
 	}
 	
 	
-	hstack(net.predict(D),Dy).disp();
+	hstack(net.predict(A),B).disp();
 
 	
-	*/
+	
 
 	// net.single_fit(C,D);
 	

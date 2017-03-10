@@ -6,7 +6,7 @@
 #define _MATRIX_
 #endif
 #include <fstream>
-
+#include "string.h"
 class DataUnit{
 
 	public :
@@ -71,7 +71,7 @@ class inData{
 };
  inData Get_Datas()
  {
-	std::ifstream in("C:\\Users\\Thautwarm\\Desktop\\JIAOTONG\\lib\\iris.txt");
+	std::ifstream in("C:\\Users\\Thautwarm\\Desktop\\JIAOTONG\\DataDealed.txt");
 	double value;
 	inData Data;	
 	while(!in.eof())

@@ -96,6 +96,29 @@ void doSigmoid(Matrix vector,Matrix &output){
 	int row=vector.row(),i;
 	for(i=1;i<=row;++i) output(i,1)=(vector(i,1)>-5)?sigmoid(vector(i,1)):0;
 }
+double tanh(double x){
+	double a,b;
+	a=exp(x);
+	b=exp(-x);
+	return (a-b)/(a+b);
+}
+void doTanh(Matrix vector,Matrix &output){
+	int row=vector.row(),i;
+	for(i=1;i<=row;++i) 
+		{
+		output(i,1)=tanh(vector(i,1));
+		}
+}
+Matrix primeTanh(Matrix output){
+	int row=output.row(),i;
+	Matrix newMat(row,1);
+	double v;
+	for(i=1;i<=row;++i) {
+	v=output(i,1);
+	newMat(i,1)=1-tanh(v)*tanh(v);
+	}
+	return newMat;
+}
 Matrix primeSigmoid(Matrix output){
 	int row=output.row(),i;
 	Matrix newMat(row,1);
@@ -134,12 +157,7 @@ Matrix primeLinear(int size){
 	return newMat;
 	
 }
-// Matrix MSE(Matrix input,Matrix output,Matrix y){  //最后一层线性激活
-	 
-	 // return (output-y);
-
-// }
-class ReluNet{  //激活函数为relu的神经网络
+class Network{  //激活函数为relu的神经网络
 	public:
 		
 		MatrixStack weight;
@@ -149,9 +167,16 @@ class ReluNet{  //激活函数为relu的神经网络
 		MatrixStack input;
 		MatrixStack output;
 		
-	ReluNet(IntVector Layer){
+		IntVector activation;
+		
+	Network(IntVector Layer){
 		int size=Layer.size;
-		int i=1;
+		
+		int i=1,j;
+		activation.init(Layer.size);
+		for(j=1;j<=Layer.size;j++){
+			activation(i)=0;
+		}
 		input.push_back(Matrix(Layer(i),1));
 		output.push_back(Matrix(Layer(i),1));
 		bias.push_back(randomMat(Layer(i+1),1));
@@ -168,6 +193,9 @@ class ReluNet{  //激活函数为relu的神经网络
 			input.push_back(Matrix(Layer(i),1));
 			output.push_back(Matrix(Layer(i),1));
 			Error.push_back(Matrix(Layer(i),1));
+	}
+	void setAct(int a,int b){
+		activation(a)=b;
 	}
 	void clear(){
 		weight.clear();
@@ -198,7 +226,7 @@ class ReluNet{  //激活函数为relu的神经网络
 				weight.next();
 				output.next();
 				bias.next();
-				doSigmoid(input.getMat(),output.getMat());                                    //do
+				doTanh(input.getMat(),output.getMat());                                    //do
 				input.next();
 		}
 		return output.getMat();
@@ -217,7 +245,7 @@ class ReluNet{  //激活函数为relu的神经网络
 		output.next();
 		while(Error.isNotEnd()){
 			
-			Error.getMat().Hadamard(weight.getMat().T()*(Error.getLastMat()),primeSigmoid(output.getMat())); //prime
+			Error.getMat().Hadamard(weight.getMat().T()*(Error.getLastMat()),primeTanh(output.getMat())); //prime
 
 			
 			weight.next();
@@ -265,7 +293,7 @@ class ReluNet{  //激活函数为relu的神经网络
 		}
 		for(i=1;i<=row;++i)
 		{	
-			int j=5;
+			int j=3;
 			while(--j){
 			single_fit(X.cut(i,i,1,col),y.cut(i,i,1,y_col));
 			}

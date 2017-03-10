@@ -78,14 +78,14 @@ class MatrixSource{
 class Matrix{
 	public:
 	MatrixSource *Mat;
-	int store_style;
+	int index_style;
 	int dim1;
 	int dim2;
 	IntVector dim1Index;
 	IntVector dim2Index;
 	Matrix(int row,int col)//默认行索引
 	{
-		store_style=0;
+		index_style=0;
 		Mat=new MatrixSource(row,col);
 		dim1=row;
 		dim2=col;
@@ -93,7 +93,7 @@ class Matrix{
 		this->dim2Index=*(new IntVector(1,this->dim2,1));
 	}
 	Matrix(){
-		store_style=0;
+		index_style=0;
 		Mat=NULL;
 		dim1=0;
 		dim2=0;
@@ -104,7 +104,7 @@ class Matrix{
 		this->Mat=mat->Mat;
 		this->dim1=mat->dim1;
 		this->dim2=mat->dim2;
-		this->store_style=mat->store_style;
+		this->index_style=mat->index_style;
 		this->dim1Index=*(new IntVector(1,this->dim1,1));
 		this->dim2Index=*(new IntVector(1,this->dim2,1));
 	}
@@ -112,7 +112,7 @@ class Matrix{
 		Mat=new MatrixSource();
 		Mat->dim1=Vec.size;
 		Mat->dim2=1;
-		store_style=0;
+		index_style=0;
 		dim1=Vec.size;
 		dim2=1;
 		dim1Index=*(new IntVector(1,this->dim1,1));
@@ -122,27 +122,27 @@ class Matrix{
 	
 	}
 	double& operator()(int i,int j){
-			return  (store_style==0)?(*Mat)(dim1Index(i),dim2Index(j)):(*Mat)(dim1Index(j),dim2Index(i));
+			return  (index_style==0)?(*Mat)(dim1Index(i),dim2Index(j)):(*Mat)(dim1Index(j),dim2Index(i));
 		}
 	int col(){
-		return (store_style==0)?dim2:dim1;
+		return (index_style==0)?dim2:dim1;
 	}
 	int row(){
-			return (store_style==0)?dim1:dim2;
+			return (index_style==0)?dim1:dim2;
 	}
 	
 	IntVector& getRowIndex(){
-		return  (store_style==0)? this->dim1Index:this->dim2Index;
+		return  (index_style==0)? this->dim1Index:this->dim2Index;
 	}
 	IntVector& getColIndex(){
-		return  (store_style==0)? this->dim2Index:this->dim1Index;
+		return  (index_style==0)? this->dim2Index:this->dim1Index;
 	}
 	Matrix copy(){
 		Matrix newMat(dim1,dim2);
 		Matrix oldMat=*this;
 		newMat.dim1Index.copy(oldMat.dim1Index);   //!!!!!需要深拷贝！回来改
 		newMat.dim2Index.copy(oldMat.dim2Index);
-		newMat.store_style=oldMat.store_style;
+		newMat.index_style=oldMat.index_style;
 		int row=oldMat.row();
 		int col=oldMat.col();
 		int i,j;
@@ -157,7 +157,7 @@ class Matrix{
 		Matrix newMat=*this;
 		newMat.dim1Index.copy(oldMat.dim1Index);   //!!!!!需要深拷贝！回来改
 		newMat.dim2Index.copy(oldMat.dim2Index);
-		newMat.store_style=oldMat.store_style;
+		newMat.index_style=oldMat.index_style;
 		int row=oldMat.row();
 		int col=oldMat.col();
 		int i,j;
@@ -168,7 +168,7 @@ class Matrix{
 	}
 	Matrix T(){
 		Matrix mat(this);
-		mat.store_style=(mat.store_style==0)?1:0;
+		mat.index_style=(mat.index_style==0)?1:0;
 		return mat;
 		}
 		
